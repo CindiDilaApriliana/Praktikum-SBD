@@ -1,0 +1,36 @@
+SELECT transaksi.tanggal, transaksi.jenis_transaksi, transaksi.jumlah FROM nasabah, transaksi WHERE nasabah.id_nasabah=transaksi.id_nasabahFK AND nasabah.nama_nasabah IN ('Sutopo','Canka Lokananta') ORDER BY transaksi.tanggal;
+
+SELECT transaksi.tanggal, nasabah.nama_nasabah, transaksi.jenis_transaksi, transaksi.jumlah FROM nasabah, transaksi WHERE transaksi.tanggal BETWEEN '2009-11-15' AND '2009-11-20' AND nasabah.id_nasabah=transaksi.id_nasabahFK ORDER BY transaksi.tanggal, nasabah.nama_nasabah;
+
+SELECT transaksi.jenis_transaksi AS "Jenis Transaksi", SUM(jumlah) AS "Jumlah (Rp)" FROM transaksi GROUP BY transaksi.jenis_transaksi ORDER BY transaksi.jenis_transaksi;
+
+SELECT jenis_transaksi AS "Jenis Transaksi", MAX(jumlah) AS 
+"Transaksi Terbesar", MIN(jumlah) AS "Transaksi Terkecil" FROM 
+transaksi GROUP BY transaksi.jenis_transaksi ORDER BY transaksi.
+jenis_transaksi;
+
+SELECT jenis_transaksi AS "Jenis Transaksi", SUM(jumlah) AS "Jumlah (Rp)", COUNT(jumlah) AS "Jumlah Transaksi" FROM transaksi WHERE tanggal BETWEEN '2009-11-1' AND '2009-11-30' GROUP BY transaksi.jenis_transaksi ORDER BY transaksi.jenis_transaksi;
+
+
+TUGAS
+
+-1- SELECT transaksi.jenis_transaksi, SUM(jumlah) AS "Jumlah (Rp)" FROM transaksi,nasabah WHERE transaksi.id_nasabahFK = nasabah.id_nasabah AND nasabah.nama_nasabah IN ("Kartika Padmasari");
+-2- SELECT SUM(saldo) AS "Saldo" FROM rekening, nasabah, nasabah_has_rekening WHERE rekening.no_rekening = nasabah_has_rekening.no_rekeningFK AND nasabah_has_rekening.id_nasabahFK = nasabah.id_nasabah AND nasabah.nama_nasabah IN ("Maryati");
+-3- SELECT nama_cabang AS "Nama Cabang", COUNT(transaksi.jumlah) AS "Jumlah Transaksi" FROM transaksi,cabang_bank, rekening WHERE transaksi.no_rekeningFK = rekening.no_rekening AND rekening.kode_cabangFK = cabang_bank.kode_cabang GROUP BY  cabang_bank.nama_cabang;
+4) SELECT nasabah.nama_nasabah, saldo FROM nasabah, rekening, transaksi WHERE transaksi.no_rekeningFK = rekening.no_rekening AND transaksi.id_nasabahFK = nasabah.id_nasabah AND saldo BETWEEN '500000' AND '2000000';
+5) SELECT nasabah.nama_nasabah AS "Nama", transaksi.tanggal AS "Tanggal", transaksi.jumlah AS "Jumlah (Rp)" FROM nasabah, transaksi WHERE nasabah.id_nasabah = transaksi.id_nasabahFK AND transaksi.jumlah > 100000 ORDER BY transaksi.jumlah DESC;
+6. 
+a. Tampilkan nama nasabah, jumlah, tanggal saldo yang memiliki saldo antara Rp 300.000 sampai Rp 1.700.000 dalam bentuk kredit
+SELECT nasabah.nama_nasabah, tanggal, saldo FROM nasabah, rekening, transaksi WHERE transaksi.no_rekeningFK = rekening.no_rekening AND transaksi.id_nasabahFK = nasabah.id_nasabah AND saldo BETWEEN '300000' AND '1700000' AND jenis_transaksi IN('kredit');
+
+b. Tampilkan nomor rekening, nama cabang dengan saldo antara Rp 750.000 sampai Rp 3.000.000.
+SELECT rekening.no_rekening, nama_cabang FROM rekening, cabang_bank WHERE rekening.kode_cabangFK = cabang_bank.kode_cabang AND saldo BETWEEN '750000' AND '3000000';
+
+c. Tampilkan nomor transaksi, nama nasabah, alamat nasabah yang dilakukan selain tanggal 15, 19 dan 20 November 2009.
+SELECT transaksi.no_transaksi, nama_nasabah, alamat_nasabah FROM transaksi, nasabah WHERE transaksi.id_nasabahFK = nasabah.id_nasabah AND tanggal NOT IN('2009-11-15', '2009-11-19', '2009-11-20');
+
+d. Tampilkan nama nasabah, pin rekening, nama cabang bank diurut berdasarkan pin dari yang terbesar.
+SELECT nasabah.nama_nasabah, pin, nama_cabang FROM nasabah, rekening, cabang_bank, nasabah_has_rekening WHERE nasabah.id_nasabah = nasabah_has_rekening.id_nasabahFK AND nasabah_has_rekening.no_rekeningFK = rekening.no_rekening AND rekening.kode_cabangFK = cabang_bank.kode_cabang ORDER BY pin DESC;
+
+e. Tampilkan nama cabang bank yang didatangi nasabah.
+SELECT cabang_bank.nama_cabang FROM nasabah, cabang_bank, rekening, nasabah_has_rekening WHERE cabang_bank.kode_cabang = rekening.kode_cabangFK AND rekening.no_rekening = nasabah_has_rekening.no_rekeningFK AND nasabah.id_nasabah = nasabah_has_rekening.id_nasabahFK GROUP BY nasabah.nama_nasabah;

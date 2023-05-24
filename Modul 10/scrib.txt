@@ -1,0 +1,26 @@
+SELECT * FROM nasabah where nasabah.id_nasabah IN
+(select DISTINCT transaksi.id_nasabahFK from transaksi 
+where jenis_transaksi='kredit');
+
+SELECT cabang_bank.kode_cabang, cabang_bank.nama_cabang, 
+AVG(rekening.saldo) as rata2 from cabang_bank, rekening where 
+cabang_bank.kode_cabang=rekening.kode_cabangFK group by 
+cabang_bank.kode_cabang having rata2 >= ALL (select AVG (saldo) 
+FROM 'rekening' group by kode_cabangFK);
+
+SELECT MAX(jumlah_transaksi) FROM nasabah WHERE transaksi;
+
+SELECT * FROM transaksi max(select DISTINCT transaksi.id_nasabahFK from transaksi 
+where jenis_transaksi=’kredit’);
+
+select distinct jumlah from transaksi where jumlah in(SELECT max(jumlah) FROM 
+`transaksi`);
+
+select distinct jumlah from transaksi where jumlah in(SELECT min(jumlah) FROM 
+`transaksi`);
+-3-
+select nama_nasabah, jumlah from transaksi, nasabah where nasabah.id_nasabah = transaksi.id_nasabahFK and jumlah in(SELECT max(jumlah) FROM 
+`transaksi`);
+
+-4-
+SELECT cabang_bank.nama_cabang FROM cabang_bank JOIN rekening on cabang_bank. kode_cabang= rekening.kode_cabangFK WHERE no_rekening NOT IN(SELECT no_rekening FROM rekening);

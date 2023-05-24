@@ -1,0 +1,29 @@
+-1- select distinct jumlah from transaksi where jumlah in(SELECT max(jumlah) FROM `transaksi`);
+-2- select distinct jumlah from transaksi where jumlah in(SELECT m(jumlah) FROM `transaksi`);
+-3- select nama_nasabah, jumlah from transaksi, nasabah where nasabah.id_nasabah = transaksi.id_nasabahFK and jumlah in(SELECT max(jumlah) FROM `transaksi`);
+-4- select* from cabang_bank cb where cb.kode_cabang not in (select distinct rekening.kode_cabangFK from rekening);
+-5- select distinct no_rekening, saldo from rekening where saldo >(select avg(saldo)from rekening);
+-6- 
+a. buatlah quary untuk menampilkan data nasabah yang pernah melakukan transaksi pada tanggal 19 November 2009!
+select from transaksi where transaksi.jenis_transaksi = 'kredit' AND tanggal BETWEEN '2009-11-15' AND '2009-11-25' AND jumlah > (SELECT AVG(jumlah) FROM transaksi);
+b. buatlah quary untuk menampilkan tanggal dan jumlah transaksi yang memiliki nilai lebih besar dari nilai jumlah rata-ratanya
+select tanggal , jumlah as 'jumlah Transaksi' from transaksi where jumlah > (select avg (jumlah) from transaksi);
+c. tampilkan data nasabah yang tidak pernah melakukan kegiatan transaksi
+select *from nasabah N where N.id_nasabah not in (select T.id_nasabahFK from transaksi T);
+d. tampilkan detail data transaksi yang dilakukan oleh nasabah dimana nama nasabah tersebut memiliki nama depan 'Budi'!
+select *from transaksi T where T.id_nasabahFK in (select N.id_nasabah from nasabah N where nama_nasabah LIKE '%Budi%');
+e. Buatlah query untuk menampilkan data rekening yang merupakan rekening dari cabang bank rut surakarta!
+select *from rekening R where R.kode_cabangFK in (select CB.kode_cabang from cabang_bank CB where kode_cabang = 'BRUS');
+ 
+SELECT mahasiswa.nim, mahasiswa.nama_mahasiswa FROM mahasiswa
+WHERE nim NOT IN (SELECT mahasiswa_has_mata_kuliah.mahasiswa_nimFK
+FROM mahasiswa_has_mata_kuliah WHERE kode_mkFK = '4121');
+
+select M.nama_mahasiswa AS 'Nama Mahasiswa', M.nim as 'NIM', MHD.nipFK as 'NIP Dosen'
+from mahasiswa M, mahasiswa_has_mata_kuliah MHK, transaksi T, matakuliah_has_dosen
+MHD where M.nim = MHK.mahasiswa_nimFK and MHK.kode_mkFK = T.kode_mk and T.kode_mk = MHD.kode_mkFK
+and MHD.kode_mkFK in (select distinct kode_mkFK from matakuliah_has_dosen where nipFK = '881' ) group by M.nim;
+
+SELECT * from mahasiswa_has_mata_kuliah;
+update mahasiswa_has_mata_kuliah as MHK set MHK.kode_mkFK = '4421' where MHK.mahasiswa_nimFK
+in (select distinct M.nim from mahasiswa M where MHK.kode_mkFK = '4321');

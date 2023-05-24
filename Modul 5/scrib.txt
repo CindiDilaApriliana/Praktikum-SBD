@@ -1,0 +1,149 @@
+Modul 3
+CREATE TABLE mata_kuliah (semester INTEGER PRIMARY KEY,sks_matkul INTEGER,nama_matkul VARCHAR(45) NOT NULL);
+
+CREATE TABLE dosen (nip INTEGER PRIMARY KEY,mata_kuliahFK INTEGER REFERENCES semester(mata_kuliah)
+ON DELETE CASCADE ON UPDATE CASCADE,nama_dosen VARCHAR(45) NOT NULL,alamat_dosen VARCHAR(255) NOT NULL);
+
+CREATE TABLE mahasiswa (
+nim SERIAL PRIMARY KEY,
+nip_dosenFK INTEGER ,
+nama_mahasiswa VARCHAR(20) NOT NULL,
+alamat_mahasiswa VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE ruang_kelas(
+jam_kelas SERIAL PRIMARY KEY,
+mata_kuliahFK INTEGER REFERENCES semester(mata_kuliah)
+ON DELETE CASCADE ON UPDATE CASCADE,
+jumlah INTEGER,
+kapasitas INTEGER,
+kode_kelas VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE mahasiswa_has_mata_kuliah (
+nimFK INTEGER REFERENCES mahasiswa(nim)
+ON DELETE CASCADE ON UPDATE CASCADE,
+mata_kuliahFK INTEGER REFERENCES semester(mata_kuliah)
+ON DELETE CASCADE ON UPDATE CASCADE,
+kode_mkFK INTEGER REFERENCES semester(kode_mk)
+ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+MODUL 5
+insert into dosen(nip,mata_kuliahFK, nama_dosen, alamat_dosen) 
+values('969','Rekayasa Perangkat Lunak', 'Endah Sudarmilah', 'Jl.Kenanga 23'),
+('881','Praktikum Algoritma Struktur Data', 'Aris Rakhmadi', 'Jl.Mawar 85'),
+('706','Algoritma Struktur Data', 'Husni Thamrin', 'Jl.Melati 34'),
+('1002057','Praktikum Jaringan Komputer', 'Ihsan Cahyo Utomo', 'Jl.Tulip 55'),
+('1001985','Sistem Basis Data', 'Helmi Imaduddin', 'Jl.Anggrek 10'),
+('130100','Bahasa Indonesia', 'Lusiana Pujiastuti', 'Jl.Guido 9'),
+('130110','Pancasila', 'Haryono Yuwono', 'Jl.Alice 34'),
+('130120','Kemuhammadiyahan', 'Yeti Dahliana', 'Jl.Greenfoot 1'),
+('130450','Logika Himpunan', 'Yusuf Sulistyo Nugroho', 'Jl.Figma 31'),
+('130540','Pemrograman Basis Data', 'Dimas Aryo Anggoro', 'Jl.Eclipse 18');
+
+insert into mahasiswa(nim,nip_dosenFK, nama_mahasiswa, alamat_mahasiswa) 
+values('200200106','706','Cindi Dila Apriliana', 'Jl.Uranus 10'),
+('200200074','706' ,'Andika Risky Faizatama', 'Jl.Saturnus 12'),
+('200200072','706' ,'Rida Arina Rosyada', 'Jl.Pluto 22'),
+('200200101','706' ,'Nicky Julyatrika Sari', 'Jl.Venus 30'),
+('200200069','706' ,'Dionaca Wida Amaly', 'Jl.Merkurius 16'),
+('200200120','706' ,'Lyan Budi Rosawati', 'Jl.Bumi 56'),
+('200200117','706' ,'Fajar Indah Nur Azizah', 'Jl.Tulip 3'),
+('200200083','706' ,'Dinny Patria Muslimawati', 'Jl.Bougenvile 5'),
+('200200088','706' ,'Muhammad Naufal Aji Satrio','Jl.Kipas 21'),
+('200200100','706' ,'Muhammad Alichwan','Jl.Aloevera11');
+
+insert into mahasiswa_has_mata_kuliah(mahasiswa_nimFK,mata_kuliah_semesterFK, kode_mkFK)
+VALUE('200200106', '1','4221'),
+('200200074', '2','4321'),
+('200200072', '3','4321'),
+('200200069', '4','4321'),
+('200200101', '5','4421'),
+('200200098', '2','4521'),
+('200200099', '3','4521'),
+('200200056', '4','4421'),
+('200200107', '5','4421'),
+('200200109', '5','4421');
+
+insert into matakuliah_has_dosen(nipFK,kode_mkFK)
+VALUE('881','4221'),
+('881','4321'),
+('969','4321'),
+('969','4321'),
+('130100','4421'),
+('130100','4521'),
+('1001985','4521'),
+('1001985','4421'),
+('1002057','4421'),
+('1002057','4421');
+
+insert into mata_kuliah(semester, sks_matkul, nama_matkul) 
+values('1', '2','Praktikum Algoritma Pemrograman'),
+('2', '2', 'Praktikum Sistem Digital'),
+('3', '2', 'Praktikum Pemrograman Beroreantasi'),
+('4', '2', 'Praktikum Jaringan Komputer'),
+('5', '2', 'Sistem Basis Data'),
+('6', '2','Rekayasa Perangkat Lunak'),
+('7', '2','Bahasa indonesia'),
+('8', '2','Kemuhammadiyahan'),
+('9', '2','Algoritma Strukur Data'),
+('10', '2','Jaringan Komputer');
+
+
+
+
+insert into ruang_kelas(jam_kelas, mata_kuliah_semesterFK, jumlah, kapasitas, kode_kelas) 
+values('1', '1' , '30', '50', 'JSEM2'),
+('2', '1' , '35', '50', 'J0410'),
+('3', '1', '40', '50', 'LABRPL'),
+('4', '1' , '30', '50', 'LSITIF'),
+('5', '2' , '50', '50', 'JSEM2'),
+('6', '2' , '35', '50', 'J0410'),
+('7', '1' , '30', '50', 'LSITIF'),
+('8', '2' , '50', '50', 'JSEM2'),
+('9', '2', '40', '50', 'LABRPL'),
+('10', '2' , '35', '50', 'J0410');
+
+INSERT INTO nasabah(id_nasabah, nama_nasabah, alamat_nasabah) 
+VALUES (1, 'Sutopo', 'Jl. Jendral Sudirman 12'),
+(2, 'Maryati', 'Jl. MT. Heryono 31'),  
+(3, 'Suparman', 'Jl. Hasanudin 81'), 
+(4, 'Kartika Padmasari', 'Jl. Manggis 15'), 
+(5, 'Budi Eko Prayogo', 'Jl. Kantil 30'), 
+(6, 'Satria Eka Jaya', 'Jl. Slamet Riyadi 45'), 
+(7, 'Indri Hapsari', 'Jl. Sutoyo 5'), 
+(8, 'Sari Murti', 'Jl. Pangandaran 11'), 
+(9, 'Canka Lokananta', 'Jl. Tidar 86'), 
+(10, 'Budi Murtono', 'Jl. Merak 22');
+
+INSERT INTO  transaksi(no,ruang, kode_mk, nama_mk, nama_dosen) 
+VALUES(1,'LabKom', '4121', 'Praktikum Algoritma Struktur Data', 'Dimas Aryo Anggoro'),
+(2,'LabRPL', '4221', 'Praktikum Jaringan Komputer', 'Ihsan Cahyo Utomo'),
+(3,'LabSI', '4321', 'Praktikum Sistem Basis Data', 'Heru Setiya Nugraha'),
+(4,'LabRPL', '4221', 'Praktikum Jaringan Komputer', 'Ihsan Cahyo Utomo'),
+(5,'LabSI', '4321', 'Praktikum Sistem Basis Data', 'Heru Setiya Nugraha'),
+(6,'J500', '4421', 'Sistem Basis Data', 'Helmi Imaduddin'),
+(7,'Jsem 3', '4521', 'PKN', 'Haryono Yuwono'),
+(8,'J500', '4421', 'Sistem Basis Data', 'Helmi Imaduddin'),
+(9,'Jsem 3', '4521', 'PKN', 'Haryono Yuwono'),
+(10,'J410', '4621', 'Rekayasa Perangkat Lunak', 'Yusuf Sulistyo Nugroho'),
+(11,'J310', '4721', 'Bahasa indonesia', 'Lusiana Pujiastuti'),
+(12,'J410', '4621', 'Rekayasa Perangkat Lunak', 'Yusuf Sulistyo Nugroho'),
+(13,'J310', '4721', 'Bahasa indonesia', 'Lusiana Pujiastuti'),
+(14,'J200', '4821', 'Kemuhammadiyahan', 'Yeti Dahliana'),
+(15,'Jsem 1', '4921', 'Algoritma Strukur Data', 'Husni Thamrin'),
+(16,'J200', '4821', 'Kemuhammadiyahan', 'Yeti Dahliana'),
+(17,'Jsem 2', '4921', 'Algoritma Strukur Data', 'Husni Thamrin'),
+(18,'Jsem 2', '41021', 'Jaringan Komputer', 'Fatah Yasin Al Irsyadi'),
+(19,'Jsem 1', '41021', 'Jaringan Komputer', 'Fatah Yasin Al Irsyadi'),
+(20,'LabKomp', '4121', 'Praktikum Algoritma Struktur Data', 'Dimas Aryo Anggoro');
+
+MODUL 7
+SELECT nama_cabang, alamat_cabang FROM cabang_bank ORDER BY nama_cabang;
+
+SELECT no_rekening, pin, saldo FROM rekening ORDER BY saldo DESC;
+
+SELECT rekening.no_rekening, nasabah.nama_nasabah, nasabah.alamat_nasabah FROM rekening, nasabah, nasabah_has_rekening WHERE nasabah.id_nasabah= nasabah_has_rekening.id_nasabahFK AND rekening.no_rekening=nasabah_has_rekening.no_rekeningFK ORDER BY nasabah.nama_nasabah;
+
+SELECT rekening.no_rekening, nasabah.nama_nasabah, rekening.saldo FROM rekening, nasabah, nasabah_has_rekening WHERE nasabah.id_nasabah= nasabah_has_rekening.id_nasabahFK AND rekening.no_rekening= nasabah_has_rekening.no_rekeningFK ORDER BY nasabah.nama_nasabah;
